@@ -113,8 +113,20 @@
             .product-details-grid { grid-template-columns: 1fr; gap: 30px; }
             .footer-content { grid-template-columns: 1fr; gap: 30px; }
             .cart-drawer { width: 100%; left: -100%; }
+            .copy-box {
+        flex-direction: column; /* جعل الرقم والزر تحت بعضهما */
+        gap: 15px;
+        text-align: center;
+        padding: 20px;
+    }
+    .copy-action-btn {
+        width: 100%; /* جعل الزر يأخذ عرض الشاشة بالكامل في الموبايل لسهولة الضغط */
+        padding: 14px 20px; /* تكبير الزر قليلاً ليناسب اللمس بالأصابع */
+        font-size: 14px;
+    }
         }
         /* --- تنسيقات قسم تواصل معنا المدمج --- */
+/* --- تنسيقات قسم تواصل معنا المدمج --- */
 .contact-card-wrapper {
     background-color: var(--bg-deep, #0D0D0D);
     border: 1px solid var(--border-color, #262626);
@@ -122,6 +134,7 @@
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transition: 0.3s ease;
+    border-radius: 12px;
 }
 
 .contact-card-wrapper:hover {
@@ -162,6 +175,7 @@
     text-decoration: none;
     font-weight: 700;
     font-size: 14px;
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 
@@ -169,7 +183,7 @@
     font-size: 18px;
 }
 
-/* تأثيرات الهوفر الخاصة بكل منصة بلمسة عصرية فاخرة */
+/* تأثيرات الهوفر لمنصات التواصل */
 .social-btn.whatsapp:hover { border-color: #25D366; background-color: rgba(37, 211, 102, 0.05); color: #25D366; }
 .social-btn.instagram:hover { border-color: #E1306C; background-color: rgba(225, 48, 108, 0.05); color: #E1306C; }
 .social-btn.tiktok:hover { border-color: #EE1D52; background-color: rgba(238, 29, 82, 0.05); color: #EE1D52; }
@@ -183,6 +197,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 8px;
     transition: 0.3s;
 }
 
@@ -204,19 +219,61 @@
     color: var(--text-gray, #A3A3A3);
 }
 
+/* زر النسخ الجديد والمزبط */
 .copy-action-btn {
     background-color: var(--text-white, #FFFFFF);
     color: var(--bg-black, #050505);
     border: none;
-    padding: 10px 20px;
+    border-radius: 6px;
+    padding: 12px 20px;
     font-weight: 700;
-    font-size: 9px;
+    font-size: 13px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     transition: 0.2s ease;
-    width: 20%;
+    width: auto;
+    white-space: nowrap;
+}
+
+.copy-action-btn:hover {
+    background-color: var(--accent-silver, #BFCOC2);
+    transform: translateY(-1px);
+}
+
+/* التجاوب مع شاشات الموبايل */
+@media (max-width: 576px) {
+    .contact-card-wrapper {
+        padding: 25px 15px; /* مساحات داخلية مناسبة للموبايل حتى لا تخرج العناصر */
+    }
+    .social-grid {
+        grid-template-columns: 1fr; /* جعل أزرار السوشيال ميديا تحت بعضها لسهولة النقر */
+    }
+    .copy-box {
+        flex-direction: column; /* جعل رقم الهاتف وزر النسخ تحت بعضهما في سطرين منفصلين */
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+    }
+    .phone-info {
+        justify-content: center;
+        font-size: 15px;
+    }
+    .copy-action-btn {
+        width: 100%; /* زر النسخ يأخذ عرض الصندوق كاملاً ليكون مريحاً للمستخدم */
+        justify-content: center;
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+/* --- تأثير عند مرور الماوس --- */
+.copy-action-btn:hover {
+    background-color: var(--text-gray, #A3A3A3);
+    transform: translateY(-2px); /* بروز خفيف للأعلى */
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); /* ظل خفيف */
 }
 
 .copy-action-btn:hover {
@@ -287,16 +344,16 @@
 
             <div class="products-grid" id="productsGrid">
                 <!-- 1. الأسود -->
-                <div class="product-card" data-title=" Polo T-Shirt – Black" onclick="openProduct('Polo T-Shirt – Black', 'LE 650', ['polo1.png', 'polo13.png', 'polo14.png'], 'تصميم بولو عصري وأنيق باللون الأسود الفاخر، مصمم بخامات قطنية عالية الجودة.')">
+                <div class="product-card" data-title="MCL Polo T-Shirt – Black" onclick="openProduct('Polo T-Shirt – Black', 'LE 650', ['polo1.png', 'polo13.png', 'polo14.png'], 'تصميم بولو عصري وأنيق باللون الأسود الفاخر، مصمم بخامات قطنية عالية الجودة.')">
                     <img src="polo1.png" alt="Black Polo" class="product-img">
                     <div class="product-info">
-                        <div class="product-title">Polo T-Shirt – Black</div>
+                        <div class="product-title">1Polo T-Shirt – Black</div>
                         <div class="product-price"><s>LE 800</s> LE 650</div>
                     </div>
                 </div>
 
                 <!-- 2. البيبي بلو -->
-                <div class="product-card" data-title=" Polo T-Shirt – Baby Blue" onclick="openProduct('Polo T-Shirt – Baby Blue', 'LE 650', ['polo2.png', 'polo77.png', 'polo78.png'], 'تصميم بولو عصري وأنيق بلون بيبي بلو الجذاب.')">
+                <div class="product-card" data-title="MCL Polo T-Shirt – Baby Blue" onclick="openProduct('Polo T-Shirt – Baby Blue', 'LE 650', ['polo2.png', 'polo77.png', 'polo78.png'], 'تصميم بولو عصري وأنيق بلون بيبي بلو الجذاب.')">
                     <img src="polo2.png" alt="Baby Blue Polo" class="product-img">
                     <div class="product-info">
                         <div class="product-title"> Polo T-Shirt – Baby Blue</div>
@@ -373,10 +430,10 @@
              
 
                 <!-- 5. الكحلي -->
-                <div class="product-card" data-title=" Polo T-Shirt – Navy Blue" onclick="openProduct(' Polo T-Shirt – Navy Blue', 'LE 650', ['polo5.png', 'polo51.png', 'polo52.png'], 'تصميم بولو عصري وأنيق بدرجة كحلي داكنة جذابة.')">
+                <div class="product-card" data-title=" Polo T-Shirt – Navy Blue" onclick="openProduct('MCL Polo T-Shirt – Navy Blue', 'LE 650', ['polo5.png', 'polo51.png', 'polo52.png'], 'تصميم بولو عصري وأنيق بدرجة كحلي داكنة جذابة.')">
                     <img src="polo5.png" alt="Navy Blue Polo" class="product-img">
                     <div class="product-info">
-                        <div class="product-title"> Polo T-Shirt – Navy Blue</div>
+                        <div class="product-title">MCL Polo T-Shirt – Navy Blue</div>
                         <div class="product-price"><s>LE 800</s> LE 650</div>
                     </div>
                 </div>
