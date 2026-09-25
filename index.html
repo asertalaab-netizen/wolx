@@ -224,22 +224,18 @@
 }
 
 /* التجاوب مع الشاشات الصغيرة (الموبايل) */
-@media (max-width: 576px) {
-    .social-grid {
-        grid-template-columns: 1fr; /* جعل الأزرار تحت بعضها في الموبايل لسهولة الضغط */
-    }
-    .contact-card-wrapper {
-        padding: 30px 20px;
-    }
-    .copy-box {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    .copy-action-btn {
-        width: 100%;
-        justify-content: center;
-    }
+@media (max-width: 768px) {
+    .navbar { padding: 15px 20px; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 36px; }
+    
+    /* أضف هذا السطر هنا ليعرض منتجين بجانب بعضهما في الموبايل */
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .product-img { height: 200px; } /* تصغير ارتفاع الصورة قليلاً لتناسب الشاشات الصغيرة */
+
+    .product-details-grid { grid-template-columns: 1fr; gap: 30px; }
+    .footer-content { grid-template-columns: 1fr; gap: 30px; }
+    .cart-drawer { width: 100%; left: -100%; }
 }
     </style>
 </head>
@@ -290,16 +286,16 @@
 
             <div class="products-grid" id="productsGrid">
                 <!-- 1. الأسود -->
-                <div class="product-card" data-title="Polo T-Shirt – Black" onclick="openProduct('Polo T-Shirt – Black', 'LE 650', ['polo1.png', 'polo13.png', 'polo14.png'], 'تصميم بولو عصري وأنيق باللون الأسود الفاخر، مصمم بخامات قطنية عالية الجودة.')">
+                <div class="product-card" data-title="MCL Polo T-Shirt – Black" onclick="openProduct('Polo T-Shirt – Black', 'LE 650', ['polo1.png', 'polo13.png', 'polo14.png'], 'تصميم بولو عصري وأنيق باللون الأسود الفاخر، مصمم بخامات قطنية عالية الجودة.')">
                     <img src="polo1.png" alt="Black Polo" class="product-img">
                     <div class="product-info">
-                        <div class="product-title">Polo T-Shirt – Black</div>
+                        <div class="product-title">1Polo T-Shirt – Black</div>
                         <div class="product-price"><s>LE 800</s> LE 650</div>
                     </div>
                 </div>
 
                 <!-- 2. البيبي بلو -->
-                <div class="product-card" data-title="Polo T-Shirt – Baby Blue" onclick="openProduct('Polo T-Shirt – Baby Blue', 'LE 650', ['polo2.png', 'polo77.png', 'polo78.png'], 'تصميم بولو عصري وأنيق بلون بيبي بلو الجذاب.')">
+                <div class="product-card" data-title="MCL Polo T-Shirt – Baby Blue" onclick="openProduct('Polo T-Shirt – Baby Blue', 'LE 650', ['polo2.png', 'polo77.png', 'polo78.png'], 'تصميم بولو عصري وأنيق بلون بيبي بلو الجذاب.')">
                     <img src="polo2.png" alt="Baby Blue Polo" class="product-img">
                     <div class="product-info">
                         <div class="product-title"> Polo T-Shirt – Baby Blue</div>
@@ -376,10 +372,10 @@
              
 
                 <!-- 5. الكحلي -->
-                <div class="product-card" data-title=" Polo T-Shirt – Navy Blue" onclick="openProduct(' Polo T-Shirt – Navy Blue', 'LE 650', ['polo5.png', 'polo51.png', 'polo52.png'], 'تصميم بولو عصري وأنيق بدرجة كحلي داكنة جذابة.')">
+                <div class="product-card" data-title=" Polo T-Shirt – Navy Blue" onclick="openProduct('MCL Polo T-Shirt – Navy Blue', 'LE 650', ['polo5.png', 'polo51.png', 'polo52.png'], 'تصميم بولو عصري وأنيق بدرجة كحلي داكنة جذابة.')">
                     <img src="polo5.png" alt="Navy Blue Polo" class="product-img">
                     <div class="product-info">
-                        <div class="product-title">polo T-Shirt – Navy Blue</div>
+                        <div class="product-title">MCL Polo T-Shirt – Navy Blue</div>
                         <div class="product-price"><s>LE 800</s> LE 650</div>
                     </div>
                 </div>
