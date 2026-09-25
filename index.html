@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORX | Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html {
+    scroll-behavior: smooth;
+}
+        :root {
+            --bg-black: #050505;
+            --bg-deep: #0D0D0D;
+            --bg-gray: #151515;
+            --text-white: #FFFFFF;
+            --text-gray: #A3A3A3;
+            --border-color: #262626;
+            --accent-silver: #BFCOC2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-black); color: var(--text-white); overflow-x: hidden; }
+
+        header { background-color: var(--bg-black); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .navbar { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
+        .logo-area { display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text-white); cursor: pointer; }
+        .logo-text h2 { font-size: 20px; letter-spacing: 2px; font-weight: 900; }
+        .logo-text span { font-size: 10px; color: var(--text-gray); letter-spacing: 1px; }
+
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-gray); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-white); }
+
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icons i { font-size: 18px; cursor: pointer; color: var(--text-white); position: relative; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--text-white); color: var(--bg-black); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 50%; }
+
+        .search-container { max-width: 1400px; margin: 20px auto 0; padding: 0 40px; display: none; }
+        .search-container.active { display: block; }
+        .search-input { width: 100%; background: var(--bg-deep); border: 1px solid var(--border-color); padding: 14px 20px; color: var(--text-white); font-size: 15px; outline: none; }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        .hero { background: linear-gradient(rgba(5,5,5,0.7), rgba(5,5,5,0.7)), url('back.png') center/cover no-repeat; padding: 120px 40px; border-bottom: 1px solid var(--border-color); }
+        .hero-content { max-width: 1400px; margin: 0 auto; }
+        .hero-tag { font-size: 12px; color: var(--text-gray); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
+        .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { color: var(--text-gray); font-size: 16px; margin-bottom: 30px; }
+
+        .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--text-white); color: var(--bg-black); padding: 14px 28px; text-decoration: none; font-weight: 700; font-size: 14px; border: none; cursor: pointer; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
+        .section-header { border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 40px; }
+        .section-header h2 { font-size: 24px; font-weight: 700; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: var(--bg-deep); border: 1px solid var(--border-color); transition: 0.3s; cursor: pointer; }
+        .product-card:hover { border-color: var(--text-gray); }
+        .product-img { width: 100%; height: 380px; object-fit: cover; background: var(--bg-gray); }
+        .product-info { padding: 20px; }
+        .product-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .product-price { font-size: 14px; color: var(--text-gray); }
+
+        /* تفاصيل المنتج ومعرض الصور */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-gray); text-decoration: none; font-size: 14px; margin-bottom: 30px; cursor: pointer; }
+        .back-link:hover { color: var(--text-white); }
+
+        .product-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+
+        .product-gallery { display: flex; flex-direction: column; gap: 15px; }
+        .product-main-display { width: 100%; height: 500px; object-fit: cover; background: var(--bg-deep); border: 1px solid var(--border-color); }
+        .product-thumbnails { display: flex; gap: 10px; }
+        .thumb-img { width: 90px; height: 90px; object-fit: cover; cursor: pointer; border: 2px solid var(--border-color); opacity: 0.6; transition: 0.3s; }
+        .thumb-img:hover, .thumb-img.active { border-color: var(--text-white); opacity: 1; }
+
+        .product-details-info h1 { font-size: 32px; font-weight: 900; margin-bottom: 15px; }
+        .product-details-info .price { font-size: 20px; color: var(--text-gray); margin-bottom: 25px; }
+        .product-details-info p { color: var(--text-gray); line-height: 1.8; margin-bottom: 30px; font-size: 14px; }
+
+        .option-group { margin-bottom: 25px; }
+        .option-group label { display: block; font-size: 13px; color: var(--text-gray); margin-bottom: 10px; text-transform: uppercase; }
+        .size-selector-lg { display: flex; gap: 10px; }
+        .size-btn-lg { background: var(--bg-deep); border: 1px solid var(--border-color); color: var(--text-gray); width: 45px; height: 45px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .size-btn-lg.active, .size-btn-lg:hover { border-color: var(--text-white); color: var(--text-white); background: var(--bg-gray); }
+
+        .add-to-cart-lg { width: 100%; background: var(--text-white); color: var(--bg-black); border: none; padding: 16px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 20px; }
+        .add-to-cart-lg:hover { background: var(--accent-silver); }
+
+        footer { background: var(--bg-deep); border-top: 1px solid var(--border-color); padding: 60px 40px 30px; margin-top: 80px; }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-col h4 { font-size: 14px; font-weight: 700; margin-bottom: 20px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: var(--text-gray); text-decoration: none; font-size: 13px; cursor: pointer; }
+        .footer-bottom { max-width: 1400px; margin: 0 auto; border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; justify-content: space-between; color: var(--text-gray); font-size: 12px; }
+
+        .cart-drawer { position: fixed; top: 0; left: -400px; width: 400px; height: 100%; background: var(--bg-deep); border-right: 1px solid var(--border-color); z-index: 2000; transition: 0.4s ease; padding: 30px; display: flex; flex-direction: column; }
+        .cart-drawer.open { left: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .close-cart { background: none; border: none; color: var(--text-white); font-size: 20px; cursor: pointer; }
+        .cart-items { flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .whatsapp-checkout { background: #25D366; color: white; width: 100%; padding: 12px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; margin-top: 20px; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 36px; }
+            .product-details-grid { grid-template-columns: 1fr; gap: 30px; }
+            .footer-content { grid-template-columns: 1fr; gap: 30px; }
+            .cart-drawer { width: 100%; left: -100%; }
+        }
+        /* --- تنسيقات قسم تواصل معنا المدمج --- */
+.contact-card-wrapper {
+    background-color: var(--bg-deep, #0D0D0D);
+    border: 1px solid var(--border-color, #262626);
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: 0.3s ease;
+}
+
+.contact-card-wrapper:hover {
+    border-color: #383838;
+}
+
+.contact-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-white, #FFFFFF);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.contact-desc {
+    color: var(--text-gray, #A3A3A3);
+    font-size: 14px;
+    margin-bottom: 35px;
+}
+
+/* شبكة أزرار التواصل الاجتماعي */
+.social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: var(--bg-black, #050505);
+    border: 1px solid var(--border-color, #262626);
+    color: var(--text-white, #FFFFFF);
+    padding: 16px 20px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.social-btn i {
+    font-size: 18px;
+}
+
+/* تأثيرات الهوفر الخاصة بكل منصة بلمسة عصرية فاخرة */
+.social-btn.whatsapp:hover { border-color: #25D366; background-color: rgba(37, 211, 102, 0.05); color: #25D366; }
+.social-btn.instagram:hover { border-color: #E1306C; background-color: rgba(225, 48, 108, 0.05); color: #E1306C; }
+.social-btn.tiktok:hover { border-color: #EE1D52; background-color: rgba(238, 29, 82, 0.05); color: #EE1D52; }
+.social-btn.facebook:hover { border-color: #1877F2; background-color: rgba(24, 119, 242, 0.05); color: #1877F2; }
+
+/* صندوق نسخ رقم الهاتف */
+.copy-box {
+    background-color: var(--bg-black, #050505);
+    border: 1px solid var(--border-color, #262626);
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.copy-box:hover {
+    border-color: #404040;
+}
+
+.phone-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-white, #FFFFFF);
+    letter-spacing: 1px;
+}
+
+.phone-info i {
+    color: var(--text-gray, #A3A3A3);
+}
+
+.copy-action-btn {
+    background-color: var(--text-white, #FFFFFF);
+    color: var(--bg-black, #050505);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s ease;
+}
+
+.copy-action-btn:hover {
+    background-color: var(--accent-silver, #BFCOC2);
+    transform: translateY(-1px);
+}
+
+/* التجاوب مع الشاشات الصغيرة (الموبايل) */
+@media (max-width: 576px) {
+    .social-grid {
+        grid-template-columns: 1fr; /* جعل الأزرار تحت بعضها في الموبايل لسهولة الضغط */
+    }
+    .contact-card-wrapper {
+        padding: 30px 20px;
+    }
+    .copy-box {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .copy-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a onclick="switchView('home')" class="logo-area">
+                <div class="logo-text">
+                    <h2>WORX </h2>
+                    
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="switchView('home')">الرئيسية</a></li>
+                <li><a href="#productsGrid" onclick="switchView('home')">المتجر</a></li>
+                <li><a href="#social" onclick="switchView('home')">تواصل</a></li>
+            </ul>
+            <div class="nav-icons">
+                <i class="fa-solid fa-search" onclick="toggleSearch()"></i>
+                <div style="position: relative;" onclick="toggleCart()">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count" id="cart-counter">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-container" id="searchContainer">
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
+    </div>
+
+    <!-- الصفحة الرئيسية -->
+    <div id="homeView" class="view-section active">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-tag"></div>
+                <h1>تخطي الجدران.<br>بداخل الأناقة.</h1>
+                <p>استكشف أحدث تشكيلات الملابس العصرية المصممة خصيصاً لأصحاب الذوق الفريد.</p>
+                <a href="#productsGrid" onclick="switchView('home')" class="btn-primary">تسوق الآن <i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+        </section>
+
+        <main class="container">
+            <div class="section-header">
+                <h2>الوصول حديثاً</h2>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- 1. الأسود -->
+                <div class="product-card" data-title="MCL Polo T-Shirt – Black" onclick="openProduct('Polo T-Shirt – Black', 'LE 650', ['polo1.png', 'polo13.png', 'polo14.png'], 'تصميم بولو عصري وأنيق باللون الأسود الفاخر، مصمم بخامات قطنية عالية الجودة.')">
+                    <img src="polo1.png" alt="Black Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">1Polo T-Shirt – Black</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                <!-- 2. البيبي بلو -->
+                <div class="product-card" data-title="MCL Polo T-Shirt – Baby Blue" onclick="openProduct('Polo T-Shirt – Baby Blue', 'LE 650', ['polo2.png', 'polo77.png', 'polo78.png'], 'تصميم بولو عصري وأنيق بلون بيبي بلو الجذاب.')">
+                    <img src="polo2.png" alt="Baby Blue Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt – Baby Blue</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                <!-- 3. الموف الداكن -->
+                <div class="product-card" data-title="Polo T-Shirt – Dark Purple" onclick="openProduct(' Polo T-Shirt – Dark Purple', 'LE 650', ['polo3.png', 'polo97.png', 'polo99.png'], 'تصميم بولو عصري وأنيق بدرجة موف داكنة فاخرة.')">
+                    <img src="polo3.png" alt="Dark Purple Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">Polo T-Shirt – Dark Purple</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                <!-- 4. الرمادي الفاتح -->
+                <div class="product-card" data-title="Polo T-Shirt – White" onclick="openProduct(' Polo T-Shirt – White', 'LE 650', ['polo7.png', 'polo41.png', 'polo42.png'], 'تصميم بولو عصري وأنيق بلون ابيض مميز.')">
+                    <img src="polo7.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt – White</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo T-Shirt – Light Grey" onclick="openProduct(' Polo T-Shirt – Light Grey', 'LE 650', ['polo4.png', 'polo23.png', 'polo24.png'], 'تصميم بولو عصري وأنيق بلون رمادي فاتح مميز.')">
+                    <img src="polo4.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt – Light Grey</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo T-Shirt – Dark Green" onclick="openProduct(' Polo T-Shirt – Dark Green', 'LE 650', ['polog.png', 'polog1.png', 'polog2.png'], 'تصميم بولو عصري وأنيق بلون اخضر مميز.')">
+                    <img src="polog.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt – Dark Green</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo Shirt - Burgundy" onclick="openProduct(' Polo Shirt - Burgundy', 'LE 650', ['polo11.png', 'polo111.png', 'poloo11.png'], 'تصميم بولو عصري وأنيق بلون برجندي مميز.')">
+                    <img src="polo11.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo Shirt - Burgundy</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo T-Shirt – Charcoal Gray" onclick="openProduct(' Polo T-Shirt – Charcoal Gray', 'LE 650', ['polo9.png', 'poloo9.png', 'polo999.png'], 'تصميم بولو عصري وأنيق بلون رمادي مميز.')">
+                    <img src="polo9.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">Polo T-Shirt – Charcoal Gray</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo T-Shirt –Taupe /Light Blue" onclick="openProduct(' Polo T-Shirt –Taupe /Light Blue', 'LE 650', ['polo12.png', 'poloo12.png', 'polo122.png'], 'قميص بولو عصري وأنيق بلون سماوي فاتح مميز.')">
+                    <img src="polo12.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt –Taupe /Light Blue</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-title=" Polo T-Shirt – Light Grey" onclick="openProduct(' Polo T-Shirt – Light Grey', 'LE 650', ['polo4.png', 'polo23.png', 'polo24.png'], 'تصميم بولو عصري وأنيق بلون رمادي فاتح مميز.')">
+                    <img src="polo4.png" alt="Light Grey Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title"> Polo T-Shirt – Light Grey</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+
+             
+
+                <!-- 5. الكحلي -->
+                <div class="product-card" data-title=" Polo T-Shirt – Navy Blue" onclick="openProduct('MCL Polo T-Shirt – Navy Blue', 'LE 650', ['polo5.png', 'polo51.png', 'polo52.png'], 'تصميم بولو عصري وأنيق بدرجة كحلي داكنة جذابة.')">
+                    <img src="polo5.png" alt="Navy Blue Polo" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">MCL Polo T-Shirt – Navy Blue</div>
+                        <div class="product-price"><s>LE 800</s> LE 650</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- صفحة تفاصيل المنتج ومعرض الصور الثلاثية -->
+    <div id="productDetailsView" class="view-section">
+        <div class="container">
+            <a onclick="switchView('home')" class="back-link"><i class="fa-solid fa-arrow-right"></i> العودة للمتجر</a>
+            
+            <div class="product-details-grid">
+                <div class="product-gallery">
+                    <img id="mainProductImg" src="" alt="Main Product" class="product-main-display">
+                    <div class="product-thumbnails">
+                        <img id="thumb0" src="" class="thumb-img active" onclick="changeMainImage(this.src, 0)">
+                        <img id="thumb1" src="" class="thumb-img" onclick="changeMainImage(this.src, 1)">
+                        <img id="thumb2" src="" class="thumb-img" onclick="changeMainImage(this.src, 2)">
+                    </div>
+                </div>
+
+                <div class="product-details-info">
+                    <h1 id="detailTitle">اسم المنتج</h1>
+                    <div class="price" id="detailPrice">0 ج.م</div>
+                    <p id="detailDesc">وصف المنتج...</p>
+
+                    <div class="option-group">
+                        <label>المقاس:</label>
+                        <div class="size-selector-lg">
+                            <button class="size-btn-lg" onclick="selectSize(this)">S</button>
+                            <button class="size-btn-lg active" onclick="selectSize(this)">M</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">L</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">XL</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">XXL</button>
+                        </div>
+                    </div>
+
+                    <button class="add-to-cart-lg" onclick="addProductToCartFromDetails()">إضافة إلى السلة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>عربة التسوق</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p style="color: var(--text-gray); text-align: center; margin-top: 40px;">عربة التسوق فارغة حالياً</p>
+        </div>
+        <div>
+            <a href="#" id="whatsappBtn" class="whatsapp-checkout" style="display: none;" onclick="checkoutWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i> إتمام الطلب عبر واتساب
+            </a>
+        </div>
+    </div>
+
+<!-- قسم تواصل معنا المباشر في الصفحة الرئيسية -->
+<section class="container" style="padding-top: 20px;">
+    <div class="section-header">
+        <h2>تواصل معنا</h2>
+    </div>
+
+    <div class="contact-card-wrapper" style="max-width: 600px; margin: 0 auto;">
+        <h1 class="contact-title">ابقَ على تواصل</h1>
+        <p class="contact-desc">تابعنا على منصات التواصل الاجتماعي أو تواصل معنا مباشرة</p>
+
+        <div class="social-grid" id="social">
+            <a href="https://wa.me/201060697619" target="_blank" class="social-btn whatsapp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>واتساب / WhatsApp</span>
+            </a>
+            <a href="https://www.instagram.com/worx.990?stkn=djliaW83OGY2YTJ4&utm_source=qr" target="_blank" class="social-btn instagram">
+                <i class="fa-brands fa-instagram"></i>
+                <span>إنستغرام / Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/@worx990?_r=1&_t=ZS-99z2ZL7ib5Q" target="_blank" class="social-btn tiktok">
+                <i class="fa-brands fa-tiktok"></i>
+                <span>تيك توك / TikTok</span>
+            </a>
+            <a href="https://www.facebook.com/share/1HvDZZY2db/?mibextid=wwXIfr" target="_blank" class="social-btn facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+                <span>فيسبوك / Facebook</span>
+            </a>
+        </div>
+
+        <div class="copy-box">
+            <div class="phone-info">
+                <i class="fa-solid fa-phone"></i>
+                <span id="phoneNum">+201060697619</span>
+            </div>
+            <button class="copy-action-btn" onclick="copyPhoneNumber()">
+                <i class="fa-regular fa-copy" id="copyIcon"></i>
+                <span id="copyText">نسخ الرقم</span>
+            </button>
+        </div>
+    </div>
+</section>
+  <footer>
+        <div class="footer-bottom" style="border:none; max-width:1400px; margin:0 auto;">
+            <p>&copy; 2026 WORX FC. جميع الحقوق محفوظة.</p>
+            <p>BEYOND WALLS, WITHIN STYLE</p>
+        </div>
+    </footer>
+    <script>
+        function copyPhoneNumber() {
+    const phoneNumber = document.getElementById('phoneNum').innerText;
+    navigator.clipboard.writeText(phoneNumber).then(() => {
+        const copyText = document.getElementById('copyText');
+        const copyIcon = document.getElementById('copyIcon');
+        
+        copyText.innerText = 'تم النسخ!';
+        copyIcon.className = 'fa-solid fa-check';
+        
+        setTimeout(() => {
+            copyText.innerText = 'نسخ الرقم';
+            copyIcon.className = 'fa-regular fa-copy';
+        }, 2000);
+    });
+}
+        let cart = [];
+        let currentProductData = {};
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            if (viewName === 'home') {
+                document.getElementById('homeView').classList.add('active');
+            } else if (viewName === 'details') {
+                document.getElementById('productDetailsView').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function openProduct(title, price, images, desc) {
+            currentProductData = { title, price, size: 'M' };
+            
+            document.getElementById('detailTitle').innerText = title;
+            document.getElementById('detailPrice').innerText = price;
+            document.getElementById('detailDesc').innerText = desc;
+            
+            // تعيين الصورة الرئيسية والصور المصغرة
+            document.getElementById('mainProductImg').src = images[0];
+            document.getElementById('thumb0').src = images[0];
+            document.getElementById('thumb1').src = images[1] || images[0];
+            document.getElementById('thumb2').src = images[2] || images[0];
+
+            document.querySelectorAll('.thumb-img').forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === 0);
+            });
+
+            switchView('details');
+        }
+
+        function changeMainImage(src, index) {
+            document.getElementById('mainProductImg').src = src;
+            document.querySelectorAll('.thumb-img').forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === index);
+            });
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn-lg').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentProductData.size = btn.innerText;
+        }
+
+        function toggleSearch() {
+            document.getElementById('searchContainer').classList.toggle('active');
+        }
+
+        function filterProducts() {
+            let query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                let title = card.getAttribute('data-title').toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('open');
+        }
+
+        function addProductToCartFromDetails() {
+            cart.push({ title: currentProductData.title, price: currentProductData.price, size: currentProductData.size });
+            updateCartUI();
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const counter = document.getElementById('cart-counter');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            
+            counter.innerText = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-gray); text-align: center; margin-top: 40px;">عربة التسوق فارغة حالياً</p>';
+                whatsappBtn.style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = '';
+            cart.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: 700; font-size: 14px;">${item.title}</div>
+                            <div style="color: var(--text-gray); font-size: 12px;">المقاس: ${item.size}</div>
+                            <div style="color: var(--text-gray); font-size: 13px;">${item.price}</div>
+                        </div>
+                        <i class="fa-solid fa-trash" style="cursor: pointer; color: var(--text-gray);" onclick="removeItem(${index})"></i>
+                    </div>
+                `;
+            });
+            whatsappBtn.style.display = 'flex';
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function checkoutWhatsApp() {
+            let message = "مرحباً، أريد طلب المنتجات التالية من متجر WORX FC:%0A";
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.title} (المقاس: ${item.size}) - ${item.price}%0A`;
+            });
+            let phone = "201060697619";
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+    </script>
+</body>
+</html>
