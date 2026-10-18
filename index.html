@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORX | Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        :root {
+            --bg-black: #050505;
+            --bg-deep: #0D0D0D;
+            --bg-gray: #151515;
+            --text-white: #FFFFFF;
+            --text-gray: #A3A3A3;
+            --border-color: #262626;
+            --accent-silver: #BFCOC2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-black); color: var(--text-white); overflow-x: hidden; }
+
+        header { background-color: var(--bg-black); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .navbar { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        .logo-area h2 { font-size: 22px; letter-spacing: 2px; font-weight: 900; color: #fff; }
+
+        .nav-links { display: flex; list-style: none; gap: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-gray); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-white); }
+
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icons i { font-size: 20px; cursor: pointer; color: var(--text-white); position: relative; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--text-white); color: var(--bg-black); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 50%; }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        .hero { background: linear-gradient(rgba(5,5,5,0.75), rgba(5,5,5,0.75)), url('back.png') center/cover no-repeat; padding: 80px 20px; border-bottom: 1px solid var(--border-color); text-align: center; }
+        .hero h1 { font-size: 38px; font-weight: 900; line-height: 1.2; margin-bottom: 15px; }
+        .hero p { color: var(--text-gray); font-size: 14px; margin-bottom: 25px; }
+
+        .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--text-white); color: var(--bg-black); padding: 12px 24px; text-decoration: none; font-weight: 700; font-size: 14px; border: none; border-radius: 4px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .section-header { border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 30px; }
+        .section-header h2 { font-size: 20px; font-weight: 700; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .product-card { background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; transition: 0.3s; cursor: pointer; }
+        .product-img { width: 100%; height: 240px; object-fit: cover; background: var(--bg-gray); display: block; }
+        .product-info { padding: 12px; }
+        .product-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-size: 13px; color: var(--text-gray); font-weight: 600; }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-gray); text-decoration: none; font-size: 14px; margin-bottom: 20px; cursor: pointer; }
+
+        .product-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        .product-gallery { display: flex; flex-direction: column; gap: 12px; }
+        .product-main-display { width: 100%; height: 420px; object-fit: cover; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 8px; }
+        .product-thumbnails { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+        .thumb-img { width: 75px; height: 75px; object-fit: cover; cursor: pointer; border: 2px solid var(--border-color); border-radius: 6px; opacity: 0.6; transition: 0.3s; flex-shrink: 0; }
+        .thumb-img.active { border-color: var(--text-white); opacity: 1; }
+
+        .product-details-info h1 { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+        .product-details-info .price { font-size: 18px; color: var(--text-gray); margin-bottom: 20px; font-weight: 700; }
+        .product-details-info p { color: var(--text-gray); line-height: 1.7; margin-bottom: 25px; font-size: 13px; }
+
+        .size-selector-lg { display: flex; gap: 8px; flex-wrap: wrap; }
+        .size-btn-lg { background: var(--bg-deep); border: 1px solid var(--border-color); color: var(--text-gray); width: 42px; height: 42px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 4px; }
+        .size-btn-lg.active { border-color: var(--text-white); color: var(--text-white); background: var(--bg-gray); }
+
+        .add-to-cart-lg { width: 100%; background: var(--text-white); color: var(--bg-black); border: none; padding: 15px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 20px; border-radius: 6px; }
+
+        footer { background: var(--bg-deep); border-top: 1px solid var(--border-color); padding: 30px 20px; margin-top: 50px; text-align: center; }
+        .footer-bottom { color: var(--text-gray); font-size: 12px; }
+
+        .cart-drawer { position: fixed; top: 0; left: -100%; width: 100%; max-width: 400px; height: 100%; background: var(--bg-deep); border-right: 1px solid var(--border-color); z-index: 2000; transition: 0.4s ease; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
+        .cart-drawer.open { left: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 15px; }
+        .close-cart { background: none; border: none; color: var(--text-white); font-size: 22px; cursor: pointer; }
+        .cart-items { flex-grow: 1; margin-bottom: 15px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+
+        .checkout-form { display: none; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .checkout-form label { display: block; font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
+        .checkout-form input { width: 100%; background: var(--bg-black); border: 1px solid var(--border-color); color: var(--text-white); padding: 10px; margin-bottom: 10px; font-size: 13px; outline: none; border-radius: 6px; }
+
+        .whatsapp-checkout { background: #25D366; color: white; width: 100%; padding: 14px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; border-radius: 6px; margin-top: 10px; }
+
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 52px; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+            .product-img { height: 350px; }
+        }
+
+        @media (max-width: 767px) {
+            .nav-links { display: none; }
+            .product-details-grid { grid-template-columns: 1fr; gap: 25px; }
+            .product-main-display { height: 320px; }
+            .cart-drawer { width: 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a onclick="switchView('home')" class="logo-area">
+                <h2>WORX</h2>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="switchView('home')">الرئيسية</a></li>
+                <li><a href="#poloSection" onclick="switchView('home')">البولو</a></li>
+                <li><a href="#roundSection" onclick="switchView('home')">الراوند</a></li>
+                <li><a href="#hoodieSection" onclick="switchView('home')">الهودي</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div style="position: relative;" onclick="toggleCart()">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count" id="cart-counter">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="homeView" class="view-section active">
+        <section class="hero">
+            <h1>تخطي الجدران.<br>بداخل الأناقة.</h1>
+            <p>استكشف أحدث تشكيلات الملابس العصرية المصممة خصيصاً لك.</p>
+            <a href="#poloSection" onclick="switchView('home')" class="btn-primary">تسوق الآن <i class="fa-solid fa-arrow-left"></i></a>
+        </section>
+
+        <main class="container" id="poloSection">
+            <div class="section-header"><h2>تشكيلة البولو | Polo Collection</h2></div>
+            <div class="products-grid" id="poloGrid"></div>
+        </main>
+
+        <main class="container" id="roundSection">
+            <div class="section-header"><h2>تشكيلة التيشيرتات الراوند | Round Neck Collection</h2></div>
+            <div class="products-grid" id="roundGrid"></div>
+        </main>
+
+        <main class="container" id="hoodieSection">
+            <div class="section-header"><h2>تشكيلة الهوديز | Hoodies Collection</h2></div>
+            <div class="products-grid" id="hoodieGrid"></div>
+        </main>
+    </div>
+
+    <div id="productDetailsView" class="view-section">
+        <div class="container">
+            <a onclick="switchView('home')" class="back-link"><i class="fa-solid fa-arrow-right"></i> العودة للمتجر</a>
+            <div class="product-details-grid">
+                <div class="product-gallery">
+                    <img id="mainProductImg" src="" alt="Product" class="product-main-display">
+                    <div class="product-thumbnails" id="thumbnailsContainer"></div>
+                </div>
+                <div class="product-details-info">
+                    <h1 id="detailTitle">اسم المنتج</h1>
+                    <div class="price" id="detailPrice">0 ج.م</div>
+                    <p id="detailDesc">وصف المنتج...</p>
+                    <div style="margin-bottom:20px;">
+                        <label style="color:var(--text-gray); font-size:12px; display:block; margin-bottom:8px;">المقاس:</label>
+                        <div class="size-selector-lg">
+                            <button class="size-btn-lg" onclick="selectSize(this)">S</button>
+                            <button class="size-btn-lg active" onclick="selectSize(this)">M</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">L</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">XL</button>
+                            <button class="size-btn-lg" onclick="selectSize(this)">XXL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart-lg" onclick="addProductToCartFromDetails()">إضافة إلى السلة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>عربة التسوق</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p style="color: var(--text-gray); text-align: center; margin-top: 30px;">السلة فارغة حالياً</p>
+        </div>
+
+        <div id="checkoutFormWrapper" class="checkout-form">
+            <h4 style="margin-bottom: 10px; font-size: 13px;">بيانات الشحن والإستلام:</h4>
+            <label>الاسم بالكامل:</label>
+            <input type="text" id="custName" placeholder="أدخل اسمك" required>
+
+            <label>رقم الهاتف:</label>
+            <input type="tel" id="custPhone" placeholder="01xxxxxxxxx" required>
+
+            <label>المحافظة:</label>
+            <input type="text" id="custCity" placeholder="مثال: القاهرة" required>
+
+            <label>العنوان التفصيلي:</label>
+            <input type="text" id="custAddress" placeholder="اسم الشارع - رقم العمارة" required>
+
+            <button class="whatsapp-checkout" onclick="submitOrderAndOpenWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i> تأكيد الطلب عبر واتساب
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 WORX FC. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+        const supabaseUrl = 'https://vhizqkodylhobljpetgu.supabase.co';
+        const supabaseKey = 'sb_publishable_WC10R2Y80AB_rRMO4kQsXg_ZKYB8aBn';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        window.supabaseClient = supabase;
+
+        async function fetchProducts() {
+            let { data: products, error } = await supabase.from('products').select('*');
+            if (error) return;
+
+            document.getElementById('poloGrid').innerHTML = '';
+            document.getElementById('roundGrid').innerHTML = '';
+            document.getElementById('hoodieGrid').innerHTML = '';
+
+            products.forEach(product => {
+                const img1 = product.image_url || '';
+                const img2 = product.image_url_2 || '';
+                const img3 = product.image_url_3 || '';
+
+                const cardHTML = `
+                    <div class="product-card" onclick="openProduct('${product.title}', '${product.price}', '${img1}', '${img2}', '${img3}', '${product.description || ''}')">
+                        <img src="${img1}" alt="${product.title}" class="product-img">
+                        <div class="product-info">
+                            <div class="product-title">${product.title}</div>
+                            <div class="product-price">${product.price}</div>
+                        </div>
+                    </div>
+                `;
+
+                if (product.category === 'polo') document.getElementById('poloGrid').innerHTML += cardHTML;
+                else if (product.category === 'round') document.getElementById('roundGrid').innerHTML += cardHTML;
+                else if (product.category === 'hoodie') document.getElementById('hoodieGrid').innerHTML += cardHTML;
+            });
+        }
+
+        supabase.channel('public:products').on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, fetchProducts).subscribe();
+        window.addEventListener('DOMContentLoaded', fetchProducts);
+    </script>
+
+    <script>
+        let cart = [];
+        let currentProductData = {};
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            if (viewName === 'home') document.getElementById('homeView').classList.add('active');
+            else if (viewName === 'details') document.getElementById('productDetailsView').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function openProduct(title, price, img1, img2, img3, desc) {
+            currentProductData = { title, price, size: 'M' };
+            document.getElementById('detailTitle').innerText = title;
+            document.getElementById('detailPrice').innerText = price;
+            document.getElementById('detailDesc').innerText = desc;
+            document.getElementById('mainProductImg').src = img1;
+
+            const thumbContainer = document.getElementById('thumbnailsContainer');
+            thumbContainer.innerHTML = '';
+
+            const images = [img1, img2, img3].filter(img => img && img.trim() !== '' && img !== 'null');
+
+            images.forEach((img, idx) => {
+                thumbContainer.innerHTML += `
+                    <img src="${img}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="changeMainImg('${img}', this)">
+                `;
+            });
+
+            switchView('details');
+        }
+
+        function changeMainImg(src, element) {
+            document.getElementById('mainProductImg').src = src;
+            document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn-lg').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentProductData.size = btn.innerText;
+        }
+
+        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); }
+
+        function addProductToCartFromDetails() {
+            cart.push({ title: currentProductData.title, price: currentProductData.price, size: currentProductData.size });
+            updateCartUI();
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const counter = document.getElementById('cart-counter');
+            const formWrapper = document.getElementById('checkoutFormWrapper');
+            counter.innerText = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-gray); text-align: center; margin-top: 30px;">السلة فارغة حالياً</p>';
+                formWrapper.style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = '';
+            cart.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: 700; font-size: 13px;">${item.title}</div>
+                            <div style="color: var(--text-gray); font-size: 11px;">المقاس: ${item.size} | ${item.price}</div>
+                        </div>
+                        <i class="fa-solid fa-trash" style="cursor: pointer; color: var(--text-gray);" onclick="removeItem(${index})"></i>
+                    </div>
+                `;
+            });
+            formWrapper.style.display = 'block';
+        }
+
+        function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
+
+        async function submitOrderAndOpenWhatsApp() {
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const city = document.getElementById('custCity').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+
+            if (!name || !phone || !city || !address) {
+                alert('يرجى ملء جميع بيانات الشحن والإستلام قبل تأكيد الطلب.');
+                return;
+            }
+
+            let itemsText = "";
+            cart.forEach((item, idx) => {
+                itemsText += `${idx + 1}. ${item.title} (مقاس: ${item.size}) - ${item.price}\n`;
+            });
+
+            await window.supabaseClient.from('orders').insert([{
+                customer_name: name,
+                customer_phone: phone,
+                customer_city: city,
+                customer_address: address,
+                items_details: itemsText,
+                total_price: `${cart.length} منتج`
+            }]);
+
+            let waMessage = `*طلب جديد من متجر WORX*%0A%0A`;
+            waMessage += `*الطلبات:*%0A${encodeURIComponent(itemsText)}%0A`;
+            waMessage += `*بيانات العميل:*%0A`;
+            waMessage += `👤 *الاسم:* ${encodeURIComponent(name)}%0A`;
+            waMessage += `📞 *الهاتف:* ${encodeURIComponent(phone)}%0A`;
+            waMessage += `🏙️ *المحافظة:* ${encodeURIComponent(city)}%0A`;
+            waMessage += `📍 *العنوان:* ${encodeURIComponent(address)}`;
+
+            window.open(`https://wa.me/201060697619?text=${waMessage}`, '_blank');
+        }
+    </script>
+</body>
+</html>
